@@ -11,7 +11,7 @@ A lightweight Kotlin Multiplatform library for capturing Jetpack Compose composa
 
 📱 Android Demo           |  🍏 iOS Demo
 :-------------------------:|:-------------------------:
-![](assets/screen_record_android.gif)  |  ![](assets/screen_record_ios.gif)
+<img src="assets/screen_record_android.gif" width="360" height="800" />  |  <img src="assets/screen_record_ios.gif" width="360" height="800" />
 
 ### 📦 Installation & Usage:
 Simply add the dependency and start capturing your composables!
