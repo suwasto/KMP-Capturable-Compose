@@ -7,6 +7,12 @@ A lightweight Kotlin Multiplatform library for capturing Jetpack Compose composa
 - Supports Jetpack Compose on Android and iOS
 - Easy-to-use API for seamless integration
 
+### 🎥 Demo
+
+📱 Android Demo           |  🍏 iOS Demo
+:-------------------------:|:-------------------------:
+![](assets/screen_record_android.gif)  |  ![](assets/screen_record_ios.gif)
+
 ### 📦 Installation & Usage:
 Simply add the dependency and start capturing your composables!
 
