@@ -65,7 +65,7 @@ mavenPublishing {
     coordinates(
         groupId = "io.github.suwasto",
         artifactId = "kmp-capturable-compose",
-        version = "0.1.0"
+        version = "0.1.1"
     )
 
     pom {

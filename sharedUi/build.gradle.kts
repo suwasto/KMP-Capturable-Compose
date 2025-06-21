@@ -41,8 +41,8 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
 
-//            implementation(projects.capturablecompose)
-            implementation("io.github.suwasto:kmp-capturable-compose:0.1.0")
+            implementation(projects.capturablecompose)
+//            implementation("io.github.suwasto:kmp-capturable-compose:0.1.0")
 
             //kotlinx datetime
             implementation(libs.kotlinx.datetime)
