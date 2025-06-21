@@ -17,7 +17,7 @@ A lightweight Kotlin Multiplatform library for capturing Jetpack Compose composa
 Simply add the dependency and start capturing your composables!
 
 ```kotlin
-implementation("io.github.suwasto:kmp-capturable-compose:0.1.0")
+implementation("io.github.suwasto:kmp-capturable-compose:$version")
 ```
 
 ### 🚀 Usage Example
