@@ -47,6 +47,42 @@ fun Capturable(
     }
 }
 
+@Composable
+fun CapturableWithScroll(
+    modifier: Modifier = Modifier,
+    onCaptured: (ImageBitmap) -> Unit,
+    captureController: CustomCaptureController,
+    content: @Composable () -> Unit
+) {
+    val graphicsLayer = rememberGraphicsLayer()
+    val coroutineScope = rememberCoroutineScope()
+    Box(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .drawWithCache {
+                if (captureController.isCapturing) {
+                    onDrawWithContent {
+                        graphicsLayer.record {
+                            this@onDrawWithContent.drawContent()
+                        }
+                        drawLayer(graphicsLayer)
+                        coroutineScope.launch {
+                            val bitmapResult = graphicsLayer.toImageBitmap()
+                            onCaptured(bitmapResult)
+                        }
+                        captureController.reset()
+                    }
+                } else {
+                    onDrawWithContent {
+                        drawContent()
+                    }
+                }
+            }
+    ) {
+        content()
+    }
+}
+
 class CaptureController {
     private val _isCapturing = mutableStateOf(false)
     internal val isCapturing: Boolean
