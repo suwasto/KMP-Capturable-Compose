@@ -47,6 +47,23 @@ fun Capturable(
     }
 }
 
+@Composable
+fun Capturable(
+    modifier: Modifier = Modifier,
+    captureController: CaptureController,
+    shareSheet: ShareSheet,
+    content: @Composable () -> Unit
+) {
+    Capturable(
+        modifier = modifier,
+        captureController = captureController,
+        onCaptured = { imageBitmap ->
+            shareSheet.share(imageBitmap)
+        },
+        content = content
+    )
+}
+
 class CaptureController {
     private val _isCapturing = mutableStateOf(false)
     internal val isCapturing: Boolean
