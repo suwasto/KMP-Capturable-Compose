@@ -45,6 +45,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
+            implementation(libs.napier)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -56,7 +57,7 @@ android {
     namespace = "io.github.suwasto.capturablecompose"
     compileSdk = 36
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

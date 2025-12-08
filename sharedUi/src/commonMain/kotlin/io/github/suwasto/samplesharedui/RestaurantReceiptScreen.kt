@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package io.github.suwasto.samplesharedui
 
 import androidx.compose.foundation.background
@@ -34,8 +36,11 @@ import io.github.suwasto.capturablecompose.rememberCaptureController
 import io.github.suwasto.capturablecompose.toByteArray
 import io.github.suwasto.samplesharedui.imagesaver.ImageSaverFactory
 import io.github.suwasto.samplesharedui.theme.SharedTheme
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import kotlinx.coroutines.withContext
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 data class OrderItem(
     val name: String,
@@ -75,17 +80,27 @@ fun RestaurantReceiptScreen(
             ) {
                 Capturable(
                     captureController = captureController,
-                    onCaptured = { imageBitmap ->
+                    onCaptured = { bitmap ->
                         coroutineScope.launch {
-                            val byteArray = imageBitmap.toByteArray(
-                                CompressionFormat.PNG, 100
-                            )
-                            val path = imageSaverFactory.getImageSaver().saveImage(
-                                byteArray = byteArray,
-                                filename = "screenshoot${Clock.System.now().toEpochMilliseconds()}",
-                                extention = "png"
-                            )
-                            snackbarHostState.showSnackbar("File Saved in $path")
+                            withContext(Dispatchers.Main) {
+                                snackbarHostState.showSnackbar("Image Captured")
+                            }
+                            withContext(Dispatchers.Default) {
+                                withContext(Dispatchers.Main) {
+                                    snackbarHostState.showSnackbar("Saving on progress")
+                                }
+                                val byteArray = bitmap.toByteArray(
+                                    CompressionFormat.PNG, 100
+                                )
+                                val path = imageSaverFactory.getImageSaver().saveImage(
+                                    byteArray = byteArray,
+                                    filename = "screenshoot${Clock.System.now().toEpochMilliseconds()}",
+                                    extention = "png"
+                                )
+                                withContext(Dispatchers.Main) {
+                                    snackbarHostState.showSnackbar("File Saved in $path")
+                                }
+                            }
                         }
                     }
                 ) {

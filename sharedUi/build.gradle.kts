@@ -55,9 +55,9 @@ kotlin {
 
 android {
     namespace = "io.github.suwasto.samplesharedui"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
