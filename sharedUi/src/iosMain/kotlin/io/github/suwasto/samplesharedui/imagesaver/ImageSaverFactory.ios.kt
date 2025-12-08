@@ -21,7 +21,7 @@ actual class ImageSaverFactory : ImageSaver {
             if (status == PHAuthorizationStatusAuthorized) {
                 saveImageToLibrary(data, filename, extention)
             } else {
-                println("❌ Permission denied to access photo library")
+                println("Permission denied to access photo library")
             }
         }
 
@@ -48,13 +48,13 @@ actual class ImageSaverFactory : ImageSaver {
                 )
             }, { success, error ->
                 if (success) {
-                    println("✅ Successfully saved image to Photos.")
+                    println("Successfully saved image to Photos.")
                 } else {
-                    println("❌ Failed to save image: ${error?.localizedDescription}")
+                    println("Failed to save image: ${error?.localizedDescription}")
                 }
             })
         } else {
-            println("❌ Failed to write image data to temporary file.")
+            println("Failed to write image data to temporary file.")
         }
     }
 
