@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package io.github.suwasto.samplesharedui
 
 import androidx.compose.foundation.background
@@ -28,14 +30,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.github.suwasto.capturablecompose.Capturable
-import io.github.suwasto.capturablecompose.CompressionFormat
-import io.github.suwasto.capturablecompose.rememberCaptureController
-import io.github.suwasto.capturablecompose.toByteArray
-import io.github.suwasto.samplesharedui.imagesaver.ImageSaverFactory
+import io.github.suwasto.capturablecompose.capturablebox.CapturableBox
+import io.github.suwasto.capturablecompose.capturablebox.rememberCaptureBoxController
+import io.github.suwasto.capturablecompose.rememberShareSheet
 import io.github.suwasto.samplesharedui.theme.SharedTheme
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 data class OrderItem(
     val name: String,
@@ -54,10 +55,8 @@ data class ReceiptData(
 )
 
 @Composable
-fun RestaurantReceiptScreen(
-    imageSaverFactory: ImageSaverFactory = ImageSaverFactory()
-) {
-    val captureController = rememberCaptureController()
+fun RestaurantReceiptScreen() {
+    val captureController = rememberCaptureBoxController()
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     SharedTheme {
@@ -73,21 +72,9 @@ fun RestaurantReceiptScreen(
                 ),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Capturable(
+                CapturableBox(
                     captureController = captureController,
-                    onCaptured = { imageBitmap ->
-                        coroutineScope.launch {
-                            val byteArray = imageBitmap.toByteArray(
-                                CompressionFormat.PNG, 100
-                            )
-                            val path = imageSaverFactory.getImageSaver().saveImage(
-                                byteArray = byteArray,
-                                filename = "screenshoot${Clock.System.now().toEpochMilliseconds()}",
-                                extention = "png"
-                            )
-                            snackbarHostState.showSnackbar("File Saved in $path")
-                        }
-                    }
+                    shareSheet = rememberShareSheet()
                 ) {
                     RestaurantReceipt(
                         modifier = Modifier.padding(innerPadding),
@@ -111,7 +98,9 @@ fun RestaurantReceiptScreen(
                 Button(
                     shape = RoundedCornerShape(20.dp),
                     onClick = {
-                        captureController.capture()
+                        coroutineScope.launch {
+                            captureController.capture()
+                        }
                     }
                 ) {
                     Text("Capture")

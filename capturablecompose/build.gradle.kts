@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import com.vanniktech.maven.publish.SonatypeHost
+import org.gradle.kotlin.dsl.implementation
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -36,6 +37,9 @@ kotlin {
     }
     
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.androidx.core.ktx)
+        }
         commonMain.dependencies {
             //put your multiplatform dependencies here
             implementation(compose.runtime)
@@ -50,9 +54,9 @@ kotlin {
 
 android {
     namespace = "io.github.suwasto.capturablecompose"
-    compileSdk = 34
+    compileSdk = 36
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

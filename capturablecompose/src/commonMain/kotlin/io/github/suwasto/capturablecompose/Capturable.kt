@@ -8,10 +8,29 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
+/**
+ * A composable that captures its content as an [ImageBitmap].
+ *
+ * This function is **deprecated**. Please migrate to [io.github.suwasto.capturablecompose.capturablebox.CapturableBox] for an improved API that handles
+ * capture logic more internally within the controller and supports optional sharing features.
+ *
+ * @param modifier The modifier to be applied to the layout.
+ * @param onCaptured A callback invoked with the captured [ImageBitmap] when a capture request completes.
+ * @param captureController The controller used to trigger the capture process.
+ * @param content The composable content to be captured.
+ *
+ * @see io.github.suwasto.capturablecompose.capturablebox.CapturableBox
+ * @see CaptureController
+ */
+@Deprecated(
+    message = "Use CapturableBox instead",
+    replaceWith = ReplaceWith("CapturableBox(modifier, captureController, content = content)")
+)
 @Composable
 fun Capturable(
     modifier: Modifier = Modifier,
@@ -24,21 +43,19 @@ fun Capturable(
     Box(
         modifier = modifier
             .drawWithCache {
-                if (captureController.isCapturing) {
-                    onDrawWithContent {
+                onDrawWithContent {
+                    drawContent()
+                    if (captureController.isCapturing) {
                         graphicsLayer.record {
                             this@onDrawWithContent.drawContent()
                         }
-                        drawLayer(graphicsLayer)
-                        coroutineScope.launch {
-                            val bitmapResult = graphicsLayer.toImageBitmap()
-                            onCaptured(bitmapResult)
+                        coroutineScope.launch(Dispatchers.Default) {
+                            val bitmap = graphicsLayer.toImageBitmap()
+                            withContext(Dispatchers.Main) {
+                                onCaptured(bitmap)
+                                captureController.reset()
+                            }
                         }
-                        captureController.reset()
-                    }
-                } else {
-                    onDrawWithContent {
-                        drawContent()
                     }
                 }
             }
@@ -60,6 +77,21 @@ class CaptureController {
         _isCapturing.value = false
     }
 }
+/**
+ * Creates and remembers an instance of [CaptureController].
+ *
+ * This function returns a [CaptureController] which can be used to control the capturing process
+ * of a [Capturable] composable. The controller is remembered across recompositions, ensuring
+ * that the state of the capture request is maintained.
+ *
+ * @return A remembered instance of [CaptureController].
+ * @see Capturable
+ * @see CaptureController
+ */
+@Deprecated(
+    message = "use rememberCaptureBoxController instead",
+    replaceWith = ReplaceWith("rememberCaptureBoxController()")
+)
 @Composable
 fun rememberCaptureController(): CaptureController {
     return remember { CaptureController() }
