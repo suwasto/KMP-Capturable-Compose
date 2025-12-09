@@ -88,6 +88,10 @@ class CaptureController {
  * @see Capturable
  * @see CaptureController
  */
+@Deprecated(
+    message = "use rememberCaptureBoxController instead",
+    replaceWith = ReplaceWith("rememberCaptureBoxController()")
+)
 @Composable
 fun rememberCaptureController(): CaptureController {
     return remember { CaptureController() }
