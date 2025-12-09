@@ -77,6 +77,17 @@ class CaptureController {
         _isCapturing.value = false
     }
 }
+/**
+ * Creates and remembers an instance of [CaptureController].
+ *
+ * This function returns a [CaptureController] which can be used to control the capturing process
+ * of a [Capturable] composable. The controller is remembered across recompositions, ensuring
+ * that the state of the capture request is maintained.
+ *
+ * @return A remembered instance of [CaptureController].
+ * @see Capturable
+ * @see CaptureController
+ */
 @Composable
 fun rememberCaptureController(): CaptureController {
     return remember { CaptureController() }

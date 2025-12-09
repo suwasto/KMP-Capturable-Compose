@@ -19,9 +19,9 @@ import java.io.FileOutputStream
 class AndroidShareSheet(private val context: Context) : ShareSheet {
     override fun share(image: ImageBitmap) {
         CoroutineScope(Dispatchers.IO).launch {
-            val file = File(context.cacheDir, "shared_image.jpg")
+            val file = File(context.cacheDir, "shared_image.png")
             FileOutputStream(file).use { out ->
-                image.asAndroidBitmap().compress(Bitmap.CompressFormat.JPEG, 90, out)
+                image.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 90, out)
             }
 
             val uri = FileProvider.getUriForFile(
@@ -32,7 +32,7 @@ class AndroidShareSheet(private val context: Context) : ShareSheet {
 
             withContext(Dispatchers.Main) {
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "image/jpeg"
+                    type = "image/png"
                     putExtra(Intent.EXTRA_STREAM, uri)
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 }

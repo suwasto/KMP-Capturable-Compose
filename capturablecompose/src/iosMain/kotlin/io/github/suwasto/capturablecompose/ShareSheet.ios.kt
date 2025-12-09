@@ -3,7 +3,6 @@ package io.github.suwasto.capturablecompose
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asSkiaBitmap
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
@@ -22,7 +21,7 @@ class IosShareSheet : ShareSheet {
     @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
     override fun share(image: ImageBitmap) {
         CoroutineScope(Dispatchers.Default).launch {
-            val byteArray = image.toByteArray(CompressionFormat.JPEG, 100)
+            val byteArray = image.toByteArray(CompressionFormat.PNG, 100)
             val data = byteArray.usePinned { pinned ->
                 NSData.create(bytes = pinned.addressOf(0), length = byteArray.size.toULong())
             }

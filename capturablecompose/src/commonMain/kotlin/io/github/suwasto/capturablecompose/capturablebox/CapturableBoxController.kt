@@ -33,6 +33,14 @@ class CapturableBoxController {
     }
 }
 
+/**
+ * Creates and remembers a [CapturableBoxController] instance.
+ *
+ * This helper function ensures that the controller survives recompositions. It should be used
+ * to obtain a controller instance that can be passed to a [CapturableBox] to trigger image captures.
+ *
+ * @return A [CapturableBoxController] instance that persists across recompositions.
+ */
 @Composable
 fun rememberCaptureBoxController(): CapturableBoxController {
     return remember { CapturableBoxController() }
