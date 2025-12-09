@@ -45,7 +45,6 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
-            implementation(libs.napier)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
